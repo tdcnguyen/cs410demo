@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { ClassifierComponent } from './classifier/classifier.component';
 import { HomeComponent } from './home/home.component';
 import { DataComponent } from './data/data.component';
-import { DataAddComponent } from './data-add/data-add.component';
+import { TrainComponent } from './train/train.component';
 import { FileDropModule } from 'ngx-file-drop';
 
 
@@ -18,7 +18,7 @@ import { FileDropModule } from 'ngx-file-drop';
     ClassifierComponent,
     HomeComponent,
     DataComponent,
-    DataAddComponent
+    TrainComponent
   ],
   imports: [
     BrowserModule,
