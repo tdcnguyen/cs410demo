@@ -101,7 +101,7 @@ export class TrainComponent implements OnInit {
       return;
     }
     
-    this.modelService.trainClassifier(this.selectedClassifier, this.dataFile, this.name).subscribe(data => {
+    this.modelService.train(this.modelFile, this.dataFile, this.name).subscribe(data => {
       this.router.navigateByUrl("/");
     },
     err => {

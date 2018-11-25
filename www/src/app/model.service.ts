@@ -32,15 +32,15 @@ export class ModelService {
       'Something bad happened; please try again later.');
   };
 
-  trainClassifier(classifier : Classifier, dataFile: File, modelName: string) : Observable<{}> {
+  train(modelFile: File, dataFile: File, modelName: string) : Observable<{}> {
     // const headers = new HttpHeaders({
     //   'Content-Type': undefined
     // });
 
     var formData = new FormData();
-    formData.append("datafile", dataFile);
-    formData.append("classifier", classifier.id);
-    formData.append("modelname", modelName);
+    formData.append("dataFile", dataFile);
+    formData.append("modelFile", modelFile);
+    formData.append("modelName", modelName);
     
     console.log(`${serverUrl}/models/train`);
     return this.http.post(`${serverUrl}/models/train`, formData)
