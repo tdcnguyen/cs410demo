@@ -1,6 +1,7 @@
+from Exceptions import InputError
 import re
 from os import listdir
-from os.path import isfile, join
+from os.path import isfile, join, dirname, basename
 from timeit import default_timer as timer
 
 from flask import (Flask, json, render_template, request, send_file,
@@ -66,41 +67,27 @@ def train_model():
     if not request.files:
         return 403
 
-    input_data = request.files['datafile']
-    print(input_data.filename)
+    input_data = request.files['dataFile']
+    model_file = load_model(request.files['modelFile'])
+
+    # try:
+    #     verify_model(model_file)
+    # except InputError as err:
+    #     return app.response_class(
+    #         response=json.dumps({"error": err.message}),
+    #         mimetype='application/json',
+    #         status = 403)
+            
     dataframe=read_files(input_data)
-    start = timer()
-    print("Pre-processing")
-    # data_list=[]
-    # for i in range(dataframe.shape[0]):
-    #     data_list.append(dataframe.iloc[i, 1])
-    #X = data_pre_process(dataframe.iloc[:, 1])
     X = dataframe.iloc[:, 1]
     y = dataframe.iloc[:, 0]
-    end = timer()
-    print(end-start)
-
-    print("Splitting")
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
-
-    print("Training")
-    start = timer()
-    classifier = pick_classifier(request.form.get('classifier'))
-    model_name = request.form.get('modelname')
-    clf = train_model(X_train, y_train, classifier)
-    end = timer()
-    print(end-start)
-
-    print("Saving")
+    model_name = request.form.get('modelName')
+    clf = model_file.train(X_train, y_train)
     save_model(clf, model_name)
-
-    print("Evaluating prediction")
-    start = timer()
     y_pred = predict(X_test, clf)
     print('accuracy %s' % accuracy_score(y_pred, y_test))
     print(classification_report(y_test, y_pred))
-    end = timer()
-    print(end-start)
 
     accuracy = accuracy_score(y_pred, y_test)
     data = {'accuracy': accuracy,
@@ -302,15 +289,15 @@ def text_prediction():
 
 
 def read_files(file_obj):
-        file_type = file_obj.filename[file_obj.filename.rfind('.'):]
-        print(file_type)
-        dataset=None
-        if (file_type == '.json'):
-            dataset = pd.read_json(file_obj)
-        elif (file_type == '.csv'):
-            dataset = pd.read_csv(file_obj, encoding="ISO-8859-1")
-            # print(dataset.shape[0])
-        return dataset
+    file_type = file_obj.filename[file_obj.filename.rfind('.'):]
+    print(file_type)
+    dataset=None
+    if (file_type == '.json'):
+        dataset = pd.read_json(file_obj)
+    elif (file_type == '.csv'):
+        dataset = pd.read_csv(file_obj, encoding="ISO-8859-1")
+        # print(dataset.shape[0])
+    return dataset
 
 
 def parse_input_data(input_data):
@@ -388,6 +375,14 @@ def save_model(classifier, file_name):
 def load_model(file_name):
    model= joblib.load(file_name)
    return model
+
+def verify_model(model):
+    if not hasattr(model, "train"): 
+        raise InputError("train", "Model does not have method train defined.")
+    
+    if not hasattr(model, "predict"): 
+        raise InputError("predict", "Model does not have method predict defined.")
+
 
 if __name__ == '__main__':
     app.run( debug=True)
