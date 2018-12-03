@@ -21,23 +21,6 @@ class Multinomial(IClassifier):
             ('vect', TfidfVectorizer()),
             ('clf', MultinomialNB())])
 
-    def pre_process(self, data):
-        processed_data = []
-        stemmer = PorterStemmer()
-        for text_data in data:
-            # make words lowercase
-            text_data = text_data.lower()
-            # tokenising
-            tokenized_data = wt(text_data)
-            # remove stop words and stemming
-            text_processed = []
-            for word in tokenized_data:
-                if word not in set(stopwords.words('english')):
-                 text_processed.append(stemmer.stem(word))
-            processed_data.append(" ".join(text_processed))
-
-        return processed_data
-
     def train(self, X, y):
         return self.classifier.fit(X, y)
 
