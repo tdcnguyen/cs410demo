@@ -10,6 +10,9 @@ import { HomeComponent } from './home/home.component';
 import { DataComponent } from './data/data.component';
 import { TrainComponent } from './train/train.component';
 import { FileDropModule } from 'ngx-file-drop';
+import { TestComponent } from './test/test.component';
+import { AgGridModule } from 'ag-grid-angular';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -18,14 +21,17 @@ import { FileDropModule } from 'ngx-file-drop';
     ClassifierComponent,
     HomeComponent,
     DataComponent,
-    TrainComponent
+    TrainComponent,
+    TestComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FileDropModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    AgGridModule.withComponents([]),
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

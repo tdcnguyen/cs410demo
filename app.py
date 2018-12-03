@@ -16,7 +16,6 @@ from sklearn.metrics import (accuracy_score, classification_report,
                              confusion_matrix, f1_score,
                              precision_recall_fscore_support, precision_score,
                              recall_score)
-from sklearn.naive_bayes import BernoulliNB, ComplementNB, MultinomialNB
 
 STORE_LOCATION = 'store'
 
@@ -58,10 +57,10 @@ def train_model():
     if not request.files:
         return 400
 
-    input_data = request.files['dataFile']
+    data = request.files['dataFile']
     model_name = request.form.get('modelName')
 
-    if request.files['modelFile']:
+    if 'modelFile' in request.files.keys():
         model = load_model(request.files['modelFile'])
     else:
         existing_model_name = request.form.get('existingModelName')
@@ -81,28 +80,34 @@ def train_model():
 
 @app.route('/models/<model_name>/predict', methods =['POST'])
 def predict_model(model_name):
+    print("Predict called")
     model_file_path = join(app.config['STORE_LOCATION'], model_name)
     if not isfile(model_file_path):
         return 404
     
     model = load_model(model_file_path)
     dataframe = read_files(request.files['dataFile'])
-
+    text = dataframe.iloc[:, 1]
     x = model.pre_process(dataframe.iloc[:, 1])
     y = dataframe.iloc[:, 0]
     y_predictions = model.predict(x)
 
-    results=[]
+    classifications=[]
 
-    for data, label, prediction in zip(x.tolist(), y.tolist(), y_predictions.tolist()):
+    for data, label, prediction in zip(text.tolist(), y.tolist(), y_predictions.tolist()):
         result = {}
         result['text'] = data
         result['label'] = label
         result['prediction'] = prediction
         result['result'] =  "Positive" if label == prediction else "Negative"
-        results.append(result)
+        classifications.append(result)
 
-    return jsonify(results)
+    return jsonify(
+        modelName = model_name,
+        accuracy = accuracy_score(y, y_predictions),
+        classificationMatrix = classification_report_data(classification_report(y, y_predictions)),
+        classifications = classifications,
+        modelUri = "http://" + request.host + "/models/" + model_name)
 
 
 @app.route('/models/<model_name>/predictOne', methods =['POST'])
@@ -119,7 +124,7 @@ def predict_model_one(model_name):
     x = model.pre_process([text])
     y = model.predict(x)
 
-    return jsonify(text = x[0], prediction = y[0])
+    return jsonify(text = text, prediction = y[0])
 
 @app.route('/classifiers')
 def get_classifiers():
