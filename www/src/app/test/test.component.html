@@ -8,19 +8,15 @@
     </div>
   </div>
 </div>
-
-<div class="row justify-content-end">
-  <div class="col-sm-4 ">
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <label class="input-group-text" for="activeModel">Active model</label>
-      </div>
-      <select class="custom-select" id="activeModel" name="activeModel" [(ngModel)]="selectedModel" #model="ngModel">
-        <option *ngFor="let model of models" [ngValue]="model">{{model.name}}</option>
-      </select>
-    </div>
+<div class="row">
+  <div class="col-sm-4">
+    <h4>Upload model</h4>
+    <div class="alert alert-success" role="alert" *ngIf="modelFile">Added file {{modelFile.name}}.</div>
+    <file-drop headertext="" (onFileDrop)="modelFileDropped($event)">
+      <span>Drop your model file here (*.pkl)</span>
+    </file-drop>
   </div>
-</div>
+</div> 
 
 <div class="row">
   <div class="col-sm-12">
@@ -90,5 +86,15 @@
         </div>
       </ng-template>
     </ngb-tab>
+    <ngb-tab id="tab3" title="Download results">
+      <ng-template ngbTabContent>
+        <div class="row mt-3">
+          <div class="col-sm-12">
+              <h4>Downloadedfile: {{classifierResults?.predictionFile}}</h4>
+          </div> 
+        </div>
+      </ng-template>
+    </ngb-tab>
+
   </ngb-tabset>
 </div>

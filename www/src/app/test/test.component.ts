@@ -26,6 +26,7 @@ export class TestComponent implements OnInit {
 
   models: Model[];
   selectedModel: Model;
+  modelFile: File;
   classifierResults: ClassifierResult;
   predictions : Classification[] = [];
   error: string;
@@ -99,7 +100,7 @@ export class TestComponent implements OnInit {
 
   private runTest(file : File) : void {
     console.log("Running test ");
-    this.modelService.predict(file, this.selectedModel).subscribe(
+    this.modelService.predict(file, this.modelFile).subscribe(
       result => {
         this.info = null;
         this.predictions = result.classifications;
@@ -118,6 +119,17 @@ export class TestComponent implements OnInit {
         fileEntry.file((file: File) => {
           this.info = "Running model against test data "  + file.name + "..."
           this.runTest(file)
+        });
+      }
+    }
+  }
+  public modelFileDropped(event: UploadEvent) {
+    for (const droppedFile of event.files) {
+      if (droppedFile.fileEntry.isFile) {
+        const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
+        fileEntry.file((file: File) => {
+          console.log(droppedFile.relativePath, file);
+          this.modelFile = file
         });
       }
     }
