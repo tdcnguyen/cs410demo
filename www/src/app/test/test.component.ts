@@ -10,6 +10,8 @@ import { AgGridNg2 } from 'ag-grid-angular';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { ClassifierResult } from '../classifier-result';
+import { Papa } from 'ngx-papaparse';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 class Result {
   value : string;
@@ -27,6 +29,8 @@ export class TestComponent implements OnInit {
   models: Model[];
   selectedModel: Model;
   classifierResults: ClassifierResult;
+  classificationResultsUrl: any;
+  classLabelResultsUrl: any;
   predictions : Classification[] = [];
   error: string;
   info: string;
@@ -52,7 +56,7 @@ export class TestComponent implements OnInit {
     }
   ];
 
-  constructor(private modelService : ModelService, private http: HttpClient) { 
+  constructor(private modelService : ModelService, private http: HttpClient, private papa : Papa, private sanitizer : DomSanitizer) { 
   }
 
   ngOnInit() {
@@ -106,9 +110,19 @@ export class TestComponent implements OnInit {
         this.gridOptions.api.setRowData(this.predictions);
         this.gridOptions.api.sizeColumnsToFit();
         this.classifierResults = result;
+        this.classificationResultsUrl = this.generateCsvBlobUrl(this.classifierResults.classifications);
+        this.classLabelResultsUrl = this.generateCsvBlobUrl(this.classifierResults.classificationMatrix);
         console.log(this.classifierResults);
       }
     )
+  }
+
+  private generateCsvBlobUrl(object : any) : SafeUrl {
+    var blob = new Blob([this.papa.unparse(object)], {
+      type: "text/csv"
+    });
+
+    return this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(blob));
   }
   
   public dataFileDropped(event: UploadEvent) {
