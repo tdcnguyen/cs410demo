@@ -13,6 +13,7 @@ import { FileDropModule } from 'ngx-file-drop';
 import { TestComponent } from './test/test.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { PapaParseModule } from 'ngx-papaparse';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     HttpClientModule,
     FormsModule,
     AgGridModule.withComponents([]),
-    NgbModule
+    NgbModule,
+    PapaParseModule
   ],
   providers: [],
   bootstrap: [AppComponent]
