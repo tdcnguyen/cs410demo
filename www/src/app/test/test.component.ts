@@ -39,10 +39,10 @@ export class TestComponent implements OnInit {
 
   rowData:any =  [];
   columnDefs = [
-    {headerName: 'Text', field: 'text' },
-    {headerName: 'Prediction', field: 'prediction' },
     {headerName: 'Label', field: 'label'},
-    {headerName: 'Result', field: 'result'}
+    {headerName: 'Prediction', field: 'prediction' },
+    {headerName: 'Result', field: 'result'},
+    {headerName: 'Text', field: 'text' }
   ];
   resultToFilter: Result =  {value: "All"};
   results :Result[] = [
