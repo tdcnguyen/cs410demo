@@ -8,7 +8,7 @@
     </div>
   </div>
 </div>
-<div class="row">
+<div class="row mt-3">
   <div class="col-sm-4">
     <h4>Upload model</h4>
     <div class="alert alert-success" role="alert" *ngIf="modelFile">Added file {{modelFile.name}}.</div>
@@ -18,7 +18,7 @@
   </div>
 </div> 
 
-<div class="row">
+<div class="row mt-3">
   <div class="col-sm-12">
     <h4>Test dataset</h4>
     <file-drop headertext="" (onFileDrop)="dataFileDropped($event)">
