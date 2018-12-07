@@ -79,13 +79,7 @@ def train_model():
     return jsonify(results)
 
 @app.route('/models/predict', methods =['POST'])
-def predict_model():
-    print("Predict called")
-    #model_file_path = join(app.config['STORE_LOCATION'], model_name)
-    #if not isfile(model_file_path):
-        #return 404
-    #model = load_model(model_file_path)
-
+def predict_uploaded_model():
     if 'modelFile' in request.files.keys():
         model = load_model(request.files['modelFile'])
     else:
@@ -97,9 +91,37 @@ def predict_model():
     y = dataframe.iloc[:, 0]
     y_predictions = model.predict(x)
 
+    classifications = get_classifications(text, y, y_predictions)
+
+    return jsonify(
+        accuracy = accuracy_score(y, y_predictions),
+        classificationMatrix = classification_report_data(classification_report(y, y_predictions)),
+        classifications = classifications)
+
+@app.route('/models/<model_name>/predict', methods =['POST'])
+def predict_model(model_name):
+    model_file_path = join(app.config['STORE_LOCATION'], model_name)
+    if not isfile(model_file_path):
+        return 404
+    model = load_model(model_file_path)
+
+    dataframe = read_files(request.files['dataFile'])
+    text = dataframe.iloc[:, 1]
+    x = model.pre_process(dataframe.iloc[:, 1])
+    y = dataframe.iloc[:, 0]
+    y_predictions = model.predict(x)
+
+    classifications = get_classifications(text, y, y_predictions)
+
+    return jsonify(
+        accuracy = accuracy_score(y, y_predictions),
+        classificationMatrix = classification_report_data(classification_report(y, y_predictions)),
+        classifications = classifications)
+
+def get_classifications(x, y, y_predictions):
     classifications=[]
 
-    for data, label, prediction in zip(text.tolist(), y.tolist(), y_predictions.tolist()):
+    for data, label, prediction in zip(x, y, y_predictions):
         result = {}
         result['text'] = data
         result['label'] = label
@@ -107,18 +129,7 @@ def predict_model():
         result['result'] =  "Positive" if label == prediction else "Negative"
         classifications.append(result)
 
-    with open('prediction.txt', 'w') as f:
-        for item in classifications:
-            f.write("%s\n" % item)
-        f.close()
-
-    return jsonify(
-        #modelName = model_name,
-        accuracy = accuracy_score(y, y_predictions),
-        classificationMatrix = classification_report_data(classification_report(y, y_predictions)),
-        classifications = classifications)
-        #predictionFile = send_file("prediction.txt"))
-        #modelUri = "http://" + request.host + "/models/" + model_name)
+    return classifications
 
 
 @app.route('/models/<model_name>/predictOne', methods =['POST'])
