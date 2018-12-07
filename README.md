@@ -48,4 +48,5 @@ To ensure that the same libraries are available on the server as well as your lo
 1. Create your classifier that implements the `IClassifier` interface for predict, train and pre_process. See *IClassifier.py* for documentation, and other sample files included in the *classifiers* folder.
 2. Copy your classifier into the *classifiers* folder.
 3. Add a *MyClassifier.yapsy-plugin* file to describe your classifier.
-3. When you start Spotlight, the classifier will automatically be loaded for testing and training. Enjoy!
+3. When you start Spotlight, the classifier will automatically be loaded for testing and training.
+4. If you would like to train your model outside your application, but test the model within the application, you may create a pickle file containing the model and upload it directly.
