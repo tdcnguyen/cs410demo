@@ -39,8 +39,8 @@ export class TestComponent implements OnInit {
 
   rowData:any =  [];
   columnDefs = [
-    {headerName: 'Label', field: 'label'},
     {headerName: 'Prediction', field: 'prediction' },
+    {headerName: 'Label', field: 'label'},
     {headerName: 'Result', field: 'result'},
     {headerName: 'Text', field: 'text' }
   ];
@@ -119,12 +119,16 @@ export class TestComponent implements OnInit {
   }
 
   private generateCsvBlobUrl(object : any) : SafeUrl {
-    var blob = new Blob([this.papa.unparse(object)], {
+    var blob = new Blob([this.papa.unparse({
+      fields: [ "prediction", "label", "result", "text"],
+      data: object
+    })], {
       type: "text/csv"
     });
 
     return this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(blob));
   }
+
   
   public dataFileDropped(event: UploadEvent) {
     for (const droppedFile of event.files) {
