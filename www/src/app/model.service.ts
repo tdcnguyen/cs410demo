@@ -45,12 +45,12 @@ export class ModelService extends BaseService {
       .pipe(catchError(this.handleError));
   }
 
-  predict(dataFile: File, model : Model) : Observable<ClassifierResult> {
+  predict(dataFile: File, modelFile: File) : Observable<ClassifierResult> {
     var formData = new FormData();
     formData.append("dataFile", dataFile);
-    formData.append("modelName", model.name);
+    formData.append("modelFile", modelFile);
 
-    return this.http.post<ClassifierResult>(`${serverUrl}/models/${model.name}/predict`, formData)
+    return this.http.post<ClassifierResult>(`${serverUrl}/models/predict`, formData)
       .pipe(catchError(this.handleError));
   }
 

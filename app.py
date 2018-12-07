@@ -78,14 +78,19 @@ def train_model():
     
     return jsonify(results)
 
-@app.route('/models/<model_name>/predict', methods =['POST'])
-def predict_model(model_name):
+@app.route('/models/predict', methods =['POST'])
+def predict_model():
     print("Predict called")
-    model_file_path = join(app.config['STORE_LOCATION'], model_name)
-    if not isfile(model_file_path):
-        return 404
-    
-    model = load_model(model_file_path)
+    #model_file_path = join(app.config['STORE_LOCATION'], model_name)
+    #if not isfile(model_file_path):
+        #return 404
+    #model = load_model(model_file_path)
+
+    if 'modelFile' in request.files.keys():
+        model = load_model(request.files['modelFile'])
+    else:
+        return 400
+
     dataframe = read_files(request.files['dataFile'])
     text = dataframe.iloc[:, 1]
     x = model.pre_process(dataframe.iloc[:, 1])
@@ -102,12 +107,18 @@ def predict_model(model_name):
         result['result'] =  "Positive" if label == prediction else "Negative"
         classifications.append(result)
 
+    with open('prediction.txt', 'w') as f:
+        for item in classifications:
+            f.write("%s\n" % item)
+        f.close()
+
     return jsonify(
-        modelName = model_name,
+        #modelName = model_name,
         accuracy = accuracy_score(y, y_predictions),
         classificationMatrix = classification_report_data(classification_report(y, y_predictions)),
-        classifications = classifications,
-        modelUri = "http://" + request.host + "/models/" + model_name)
+        classifications = classifications)
+        #predictionFile = send_file("prediction.txt"))
+        #modelUri = "http://" + request.host + "/models/" + model_name)
 
 
 @app.route('/models/<model_name>/predictOne', methods =['POST'])

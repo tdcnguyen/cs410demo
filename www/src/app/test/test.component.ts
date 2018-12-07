@@ -28,6 +28,7 @@ export class TestComponent implements OnInit {
 
   models: Model[];
   selectedModel: Model;
+  modelFile: File;
   classifierResults: ClassifierResult;
   classificationResultsUrl: any;
   classLabelResultsUrl: any;
@@ -38,10 +39,10 @@ export class TestComponent implements OnInit {
 
   rowData:any =  [];
   columnDefs = [
-    {headerName: 'Text', field: 'text' },
     {headerName: 'Prediction', field: 'prediction' },
     {headerName: 'Label', field: 'label'},
-    {headerName: 'Result', field: 'result'}
+    {headerName: 'Result', field: 'result'},
+    {headerName: 'Text', field: 'text' }
   ];
   resultToFilter: Result =  {value: "All"};
   results :Result[] = [
@@ -103,7 +104,7 @@ export class TestComponent implements OnInit {
 
   private runTest(file : File) : void {
     console.log("Running test ");
-    this.modelService.predict(file, this.selectedModel).subscribe(
+    this.modelService.predict(file, this.modelFile).subscribe(
       result => {
         this.info = null;
         this.predictions = result.classifications;
@@ -118,12 +119,16 @@ export class TestComponent implements OnInit {
   }
 
   private generateCsvBlobUrl(object : any) : SafeUrl {
-    var blob = new Blob([this.papa.unparse(object)], {
+    var blob = new Blob([this.papa.unparse({
+      fields: [ "prediction", "label", "result", "text"],
+      data: object
+    })], {
       type: "text/csv"
     });
 
     return this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(blob));
   }
+
   
   public dataFileDropped(event: UploadEvent) {
     for (const droppedFile of event.files) {
@@ -132,6 +137,17 @@ export class TestComponent implements OnInit {
         fileEntry.file((file: File) => {
           this.info = "Running model against test data "  + file.name + "..."
           this.runTest(file)
+        });
+      }
+    }
+  }
+  public modelFileDropped(event: UploadEvent) {
+    for (const droppedFile of event.files) {
+      if (droppedFile.fileEntry.isFile) {
+        const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
+        fileEntry.file((file: File) => {
+          console.log(droppedFile.relativePath, file);
+          this.modelFile = file
         });
       }
     }
