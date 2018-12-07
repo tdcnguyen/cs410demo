@@ -95,27 +95,29 @@ export class TestComponent implements OnInit {
     this.modelService.getModels()
       .subscribe(models => { 
         this.models = models
-        if (this.models.length > 0)
-        {
-          this.selectedModel = this.models[0]
-        }
       });
   }
 
-  private runTest(file : File) : void {
-    console.log("Running test ");
-    this.modelService.predict(file, this.modelFile).subscribe(
-      result => {
-        this.info = null;
-        this.predictions = result.classifications;
-        this.gridOptions.api.setRowData(this.predictions);
-        this.gridOptions.api.sizeColumnsToFit();
-        this.classifierResults = result;
-        this.classificationResultsUrl = this.generateCsvBlobUrl(this.classifierResults.classifications);
-        this.classLabelResultsUrl = this.generateCsvBlobUrl(this.classifierResults.classificationMatrix);
-        console.log(this.classifierResults);
-      }
-    )
+  private handleResults(result : ClassifierResult) : void {
+    this.info = null;
+    this.predictions = result.classifications;
+    this.gridOptions.api.setRowData(this.predictions);
+    this.gridOptions.api.sizeColumnsToFit();
+    this.classifierResults = result;
+    this.classificationResultsUrl = this.generateCsvBlobUrl(this.classifierResults.classifications);
+    this.classLabelResultsUrl = this.generateCsvBlobUrl(this.classifierResults.classificationMatrix);
+    console.log(this.classifierResults);
+  }
+
+  private runTest(dataFile : File) : void {
+    if (this.modelFile)
+    {
+      this.modelService.predictFromModelFile(dataFile, this.modelFile).subscribe(result => this.handleResults(result));
+    }
+    else if (this.selectedModel)
+    {
+      this.modelService.predict(dataFile, this.selectedModel).subscribe(result => this.handleResults(result));
+    }
   }
 
   private generateCsvBlobUrl(object : any) : SafeUrl {
@@ -129,6 +131,12 @@ export class TestComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(blob));
   }
 
+  public selectedModelChanged() : void {
+    if (this.selectedModel)
+    {
+      this.modelFile = null;
+    }
+  }
   
   public dataFileDropped(event: UploadEvent) {
     for (const droppedFile of event.files) {
@@ -148,6 +156,11 @@ export class TestComponent implements OnInit {
         fileEntry.file((file: File) => {
           console.log(droppedFile.relativePath, file);
           this.modelFile = file
+
+          if (this.selectedModel)
+          {
+            this.selectedModel = null;
+          }
         });
       }
     }
