@@ -11,12 +11,10 @@
       <div class="col-sm-12">
         <h4>
           <i class="fas fa-check-circle validate-checkbox" *ngIf="selectedClassifier || selectedModel || modelFile"></i>
-          1. Select model or classifier
+          1. Select a classifier
         </h4>
-        <p>Select a classifier, an existing trained model, or upload a trained model.</p>
       </div>
       <div class="col-sm-4">
-        <h6>Classifier</h6>
         <div class="input-group">
           <div class="input-group-prepend">
             <label class="input-group-text" for="selectClassifier">Classifier</label>
@@ -54,7 +52,7 @@
       <div class="col-sm-12">
         <h4>
           <i class="fas fa-check-circle validate-checkbox" *ngIf="dataFile"></i>
-          2. Select training data
+          2. Upload training dataset
         </h4>
         <div class="alert alert-success" role="alert" *ngIf="dataFile">Added file {{dataFile.name}}.</div>
         <file-drop headertext="" (onFileDrop)="dataFileDropped($event)">
