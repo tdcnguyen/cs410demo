@@ -44,6 +44,19 @@ def get_models():
     )
     return response
 
+@app.route('/models/upload', methods = ['POST'])
+def upload_model():
+    model_name = request.form.get('modelName')
+
+    if not 'modelFile' in request.files.keys():
+        return 404
+
+    model = load_model(request.files['modelFile'])
+    save_model(model, model_name)
+
+    return jsonify(modelName = "model_name")
+
+
 @app.route('/models/<model_name>')
 def get_stored_model(model_name):
     model_file_path = join(app.config['STORE_LOCATION'], model_name)

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModelService } from '../model.service';
 import { Model } from '../model';
 import {Router, ActivatedRoute, Params} from '@angular/router';
+import { UploadEvent, FileSystemFileEntry } from 'ngx-file-drop';
 
 @Component({
   selector: 'app-home',
@@ -16,11 +17,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.getModels();
-  }
-
-  getModels(): void {
-    this.modelService.getModels()
-      .subscribe(models => this.models = models);
 
     this.activatedRoute.queryParams.subscribe(params => {
       if (params['savedModel'])
@@ -30,4 +26,22 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  getModels(): void {
+    this.modelService.getModels()
+      .subscribe(models => this.models = models);
+  }
+  
+  public modelFileDropped(event: UploadEvent) {
+    for (const droppedFile of event.files) {
+      if (droppedFile.fileEntry.isFile) {
+        const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
+        fileEntry.file((file: File) => {
+          this.modelService.upload(file, file.name).subscribe(
+            data => this.info = "Saved model " + file.name + " successfully."
+          );
+          this.getModels();
+        });
+      }
+    }
+  }
 }

@@ -4,8 +4,8 @@
   </div>
   <p>
     Welcome to Spotlight!<br>
-    Upload a dataset to get started.
   </p>
+  
   <p>Currently saved models:</p>
   <ul>
       <li *ngFor="let model of models">
@@ -13,4 +13,11 @@
         <a href="{{model.url}}" >Download</a>
       </li>
   </ul>
+</div>
+
+<div class="col-sm-4">
+  <h6>Upload model</h6>
+  <file-drop headertext="" (onFileDrop)="modelFileDropped($event)">
+    <span>Drop your model file here (*.pkl)</span>
+  </file-drop>
 </div>
