@@ -17,6 +17,7 @@ from sklearn.metrics import (accuracy_score, classification_report,
                              precision_recall_fscore_support, precision_score,
                              recall_score)
 
+# Set up variables
 STORE_LOCATION = 'store'
 
 app = Flask(__name__)
@@ -26,6 +27,7 @@ CORS(app)
 classifierManager = ClassifierManager()
 classifierManager.loadAll()
 
+# Get list of models
 @app.route('/models')
 def get_models():
     model_store = app.config['STORE_LOCATION']
@@ -44,6 +46,7 @@ def get_models():
     )
     return response
 
+# Upload model from client to server
 @app.route('/models/upload', methods = ['POST'])
 def upload_model():
     model_name = request.form.get('modelName')
@@ -56,7 +59,7 @@ def upload_model():
 
     return jsonify(modelName = "model_name")
 
-
+# Get model from server
 @app.route('/models/<model_name>')
 def get_stored_model(model_name):
     model_file_path = join(app.config['STORE_LOCATION'], model_name)
@@ -65,6 +68,7 @@ def get_stored_model(model_name):
 
     return send_from_directory(app.config['STORE_LOCATION'], model_name)
 
+# Train model
 @app.route('/models/train', methods = ['POST'])
 def train_model():
     if not request.files:
@@ -91,6 +95,7 @@ def train_model():
     
     return jsonify(results)
 
+# Test model uploaded from client against input data uploaded from client
 @app.route('/models/predict', methods =['POST'])
 def predict_uploaded_model():
     if 'modelFile' in request.files.keys():
@@ -111,6 +116,7 @@ def predict_uploaded_model():
         classificationMatrix = classification_report_data(classification_report(y, y_predictions)),
         classifications = classifications)
 
+# Test model already on server against input data uploaded from client
 @app.route('/models/<model_name>/predict', methods =['POST'])
 def predict_model(model_name):
     model_file_path = join(app.config['STORE_LOCATION'], model_name)
@@ -131,6 +137,7 @@ def predict_model(model_name):
         classificationMatrix = classification_report_data(classification_report(y, y_predictions)),
         classifications = classifications)
 
+# Get classification predictions
 def get_classifications(x, y, y_predictions):
     classifications=[]
 
@@ -144,7 +151,7 @@ def get_classifications(x, y, y_predictions):
 
     return classifications
 
-
+# Test model already on server against input data entered in form
 @app.route('/models/<model_name>/predictOne', methods =['POST'])
 def predict_model_one(model_name):
     model_file_path = join(app.config['STORE_LOCATION'], model_name)
@@ -161,12 +168,14 @@ def predict_model_one(model_name):
 
     return jsonify(text = text, prediction = y[0])
 
+# Get list of classifiers
 @app.route('/classifiers')
 def get_classifiers():
     return jsonify([
         {'id': classifier_name, 'name': classifier_name}
         for classifier_name in classifierManager.classifiers.keys()])
 
+# Get classifier
 @app.route('/classifiers/<classifier_name>')
 def get_classifier(classifier_name):
     if not classifier_name in classifierManager.classifiers.keys():
@@ -174,6 +183,7 @@ def get_classifier(classifier_name):
     
     return jsonify(name = classifier_name)
 
+# Train classifier
 @app.route('/classifiers/<classifier_name>/train', methods =['POST'])
 def train_classifier(classifier_name):
     if not classifier_name in classifierManager.classifiers.keys():
@@ -190,6 +200,7 @@ def train_classifier(classifier_name):
 
     return jsonify(results)
 
+# Read file method
 def read_files(file_obj):
     file_type = file_obj.filename[file_obj.filename.rfind('.'):]
     dataset = None
@@ -201,11 +212,13 @@ def read_files(file_obj):
 
     return dataset
 
+# Create data frame from input data
 def parse_input_data(input_data):
     list_of_lines = str(input_data).strip().splitlines()
     dataset = pd.DataFrame(list_of_lines)
     return dataset
 
+# Get classification report
 def classification_report_data(report):
     report_data = []
     lines = report.split('\n')
@@ -231,6 +244,7 @@ def classification_report_data(report):
         report_data.append(row)
     return report_data
 
+# Train model using input data
 def train(data, model):
     dataframe = read_files(data)
 
@@ -239,6 +253,7 @@ def train(data, model):
 
     model.train(x, y)
 
+# Save model
 def save_model(model, model_name):
     joblib.dump(model, join(app.config['STORE_LOCATION'], model_name))
     return {
@@ -246,9 +261,11 @@ def save_model(model, model_name):
         "modelUrl": "http://" + request.host + "/models/" + model_name,
     }
 
+# Load model
 def load_model(file_name):
    model= joblib.load(file_name)
    return model
 
+# Main
 if __name__ == '__main__':
     app.run(debug=True)
