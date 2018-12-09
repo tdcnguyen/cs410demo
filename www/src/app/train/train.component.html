@@ -7,11 +7,14 @@
   </div>
   <form (ngSubmit)="onSubmit()" #adddataForm="ngForm">
 
+    <h3>Train a model</h3>
+    <p>Train your model using the following steps.</p>
+
     <div class="row mt-3">
       <div class="col-sm-12">
         <h4>
           <i class="fas fa-check-circle validate-checkbox" *ngIf="selectedClassifier || selectedModel || modelFile"></i>
-          1. Select a classifier
+          Select a classifier
         </h4>
       </div>
       <div class="col-sm-4">
@@ -25,34 +28,13 @@
           </select>
         </div>
       </div>
-
-      <!--div class="col-sm-4">
-        <h6>Model</h6>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <label class="input-group-text" for="selectModel">Existing model</label>
-          </div>
-          <select class="custom-select" id="selectModel" name="selectModel" [(ngModel)]="selectedModel" (ngModelChange)="updateName()"
-            #model="ngModel">
-            <option *ngFor="let model of models" [ngValue]="model">{{model.name}}</option>
-          </select>
-        </div>
-      </div-->
-
-      <!--div class="col-sm-4">
-        <h6>Upload model</h6>
-        <div class="alert alert-success" role="alert" *ngIf="modelFile">Added file {{modelFile.name}}.</div>
-        <file-drop headertext="" (onFileDrop)="modelFileDropped($event)">
-          <span>Drop your model file here (*.pkl)</span>
-        </file-drop>
-      </div-->
     </div>
 
     <div class="row mt-3">
       <div class="col-sm-12">
         <h4>
           <i class="fas fa-check-circle validate-checkbox" *ngIf="dataFile"></i>
-          2. Upload training dataset
+          Upload training data set
         </h4>
         <div class="alert alert-success" role="alert" *ngIf="dataFile">Added file {{dataFile.name}}.</div>
         <file-drop headertext="" (onFileDrop)="dataFileDropped($event)">
@@ -65,7 +47,7 @@
       <div class="col-sm-12">
         <h4>
           <i class="fas fa-check-circle validate-checkbox" *ngIf="name"></i>
-          3. Give the model a name
+          Give the model a name
         </h4>
       </div>
       <div class="col-sm-4">
@@ -76,7 +58,7 @@
 
     <div class="row mt-3">
       <div class="col-sm-6">
-        <button type="submit" class='btn btn-success'>Save</button>
+        <button type="submit" class='btn btn-success'>Train</button>
         <button type="button" class='btn btn-default ml-1' routerLink="/data">Cancel</button>
       </div>
     </div>
