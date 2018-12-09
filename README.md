@@ -68,7 +68,7 @@ Start the back-end Flask server.
 
 1. Open a command-line interface.
 2. Change directories to the application root.
-3. Run the following command `pipenv run python app.py`.
+3. Run the following command: `pipenv run python app.py`
 
 ### Front-end Startup
 
@@ -76,7 +76,7 @@ Start the front-end Angular server.
 
 1. Open a command-line interface.
 2. Change directories to the application *www* folder.
-3. Run the following command `ng serve`.
+3. Run the following command: `ng serve`
 
 ## Access
 
@@ -95,6 +95,6 @@ To ensure that the same libraries are available on the server as well as your lo
 
 1. Write your classifier to implement the `IClassifier` interface for `predict`, `train` and `pre_process`. See *IClassifier.py* for documentation, and other sample files included in the *classifiers* folder.
 2. Copy your classifier into the *classifiers* folder.
-3. Add a *.yapsy-plugin* file to describe your classifier.
+3. Add a *\*.yapsy-plugin* file to describe your classifier.
 
 When you start *Spotlight*, the classifier will automatically be loaded for testing and training. If you would like to train your model outside your application, but test the model within the application, you may create a pickle (.pkl) file containing the model and upload it directly.
