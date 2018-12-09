@@ -28,7 +28,7 @@ We could not find any standard tools, either packaged as part of a data mining l
 
 Since the project was built to support existing implementations of data mining tasks, we targeted the most common libraries used for building text mining algorithms. We leveraged the pandas Python package to build data frames, and used the scikit-learn Python machine learning library as a test bench to support various text mining and analysis tasks.
 
-We implemented the web application front-end using Angular, a TypeScript-based open-source platform. For the application back-end, we used Flask, a web framework written in Python.
+We implemented the web application front-end using *Angular*, a TypeScript-based open-source platform. For the application back-end, we used *Flask*, a web framework written in Python.
 
 # Usage
 
