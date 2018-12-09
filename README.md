@@ -2,8 +2,8 @@
 
 ## A Customizable Web Interface for Text Mining Demonstrations
 
-Wei Lim (wkl2@illinois.edu)
-Thai Duy Cuong Nguyen (thaidn2@illinois.edu)
+Wei Lim (wkl2@illinois.edu),
+Thai Duy Cuong Nguyen (thaidn2@illinois.edu),
 Purba Pattanaik (bp7@illinois.edu)
 
 # Abstract
@@ -68,10 +68,7 @@ Start the back-end Flask server.
 
 1. Open a command-line interface.
 2. Change directories to the application root.
-3. Run the following command:
-```
-pipenv run python app.py
-```
+3. Run the following command `pipenv run python app.py`.
 
 ### Front-end Startup
 
@@ -79,10 +76,7 @@ Start the front-end Angular server.
 
 1. Open a command-line interface.
 2. Change directories to the application *www* folder.
-3. Run the following command:
-```
-ng serve
-```
+3. Run the following command `ng serve`.
 
 ## Access
 
