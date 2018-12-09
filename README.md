@@ -37,7 +37,7 @@ We implemented the web application front-end using *Angular*, a TypeScript-based
 ### Software Requirements
 
 1. Python 3.X (https://www.python.org/)
-2. pip
+2. pip (Python package manager)
 3. npm (https://www.npmjs.com/)
 
 ### Back-end Setup
