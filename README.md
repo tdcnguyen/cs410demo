@@ -8,7 +8,7 @@ Purba Pattanaik (bp7@illinois.edu)
 
 # Abstract
 
-We designed, developed and implemented a prototype web interface and application called *Spotlight* that allows researchers to present text mining and analysis algorithms quickly and easily. Our application provides a generic, customizable and extensible framework for presenting these algorithms. The minimum viable product (MVP) that we created is tailored to classification tasks but could be adapted to other tasks in the future.
+We designed, developed and implemented a prototype web interface and application called *Textlight* that allows researchers to present text mining and analysis algorithms quickly and easily. Our application provides a generic, customizable and extensible framework for presenting these algorithms. The minimum viable product (MVP) that we created is tailored to classification tasks but could be adapted to other tasks in the future.
 
 # Introduction
 
@@ -21,7 +21,7 @@ A useful application for demos would allow the user to upload specific input dat
 3. For translation tasks, the translated input.
 4. For regression tasks, one or more real-valued outputs.
 
-In response to this need, we created a customizable web interface called *Spotlight* for text mining tasks that allows researchers to easily demonstrate their algorithms. Researchers and text mining enthusiasts can upload data sets, train or upload models, test these models, and view or download both specific results and aggregated statistics using our web application. Our prototype is tailored to classification tasks but could be expanded to other text mining and analysis tasks.
+In response to this need, we created a customizable web interface called *Textlight* for text mining tasks that allows researchers to easily demonstrate their algorithms. Researchers and text mining enthusiasts can upload data sets, train or upload models, test these models, and view or download both specific results and aggregated statistics using our web application. Our prototype is tailored to classification tasks but could be expanded to other text mining and analysis tasks.
 
 # Implementation
 We could not find any standard tools, either packaged as part of a data mining library, or a standalone application, that perform direct integration of text mining algorithms into a demonstrable application with visualization. There are sample libraries in certain machine learning packages that provide sample code for producing a small subset of demonstrable applications.
@@ -32,11 +32,11 @@ We implemented the web application front-end using *Angular*, a TypeScript-based
 
 ## Back-end
 
-The application back-end was implemented using the Python web framework *Flask*. As a web framework, *Flask* maps URLs to Python code. The Python code for *Spotlight* includes methods for data pre-processing, training models, computing model predictions, and post-processing results for storage and consumption. The data frames used in *Spotlight* were implemented using the Python *pandas* open source library. This library provides easy-to-use data structures that can accommodate heterogeneous data types, and has tools for reading and writing data between in-memory data structures and different storage media such as CSV files and SQL databases. To process these data, the out-of-the-box analytics includes calls to classification methods from the *scikit-learn* Python library. 
+The application back-end was implemented using the Python web framework *Flask*. As a web framework, *Flask* maps URLs to Python code. The Python code for *Textlight* includes methods for data pre-processing, training models, computing model predictions, and post-processing results for storage and consumption. The data frames used in *Textlight* were implemented using the Python *pandas* open source library. This library provides easy-to-use data structures that can accommodate heterogeneous data types, and has tools for reading and writing data between in-memory data structures and different storage media such as CSV files and SQL databases. To process these data, the out-of-the-box analytics includes calls to classification methods from the *scikit-learn* Python library. 
 
 ## Front-end
 
-The application front-end was implemented using the TypeScript-based open-source *Angular* platform. The collective *Angular* web applications for *Spotlight* include a top-level organization page (*app*), a default application home page (*home*), a model training application (*train*), a model prediction application (*test*) and a quick model checking application (*classifier*). *Angular* web applications include a HTML component for web layout as well as TypeScript components for processing.
+The application front-end was implemented using the TypeScript-based open-source *Angular* platform. The collective *Angular* web applications for *Textlight* include a top-level organization page (*app*), a default application home page (*home*), a model training application (*train*), a model prediction application (*test*) and a quick model checking application (*classifier*). *Angular* web applications include a HTML component for web layout as well as TypeScript components for processing.
 
 # Usage
 
@@ -93,7 +93,7 @@ Once the back-end and front-end servers are running, the web application can be 
 
 # Customization
 
-*Spotlight* can be customized to include user-provided classifier code written in Python.
+*Textlight* can be customized to include user-provided classifier code written in Python.
 
 ## Environment
 
@@ -105,4 +105,4 @@ To ensure that the same libraries are available on the server as well as your lo
 2. Copy your classifier into the *classifiers* folder.
 3. Add a *\*.yapsy-plugin* file to describe your classifier.
 
-When you start *Spotlight*, the classifier will automatically be loaded for testing and training. If you would like to train your model outside your application, but test the model within the application, you may create a pickle (.pkl) file containing the model and upload it directly.
+When you start *Textlight*, the classifier will automatically be loaded for testing and training. If you would like to train your model outside your application, but test the model within the application, you may create a pickle (.pkl) file containing the model and upload it directly.
