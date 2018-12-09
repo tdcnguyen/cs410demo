@@ -26,9 +26,17 @@ In response to this need, we created a customizable web interface called *Spotli
 # Implementation
 We could not find any standard tools, either packaged as part of a data mining library, or a standalone application, that perform direct integration of text mining algorithms into a demonstrable application with visualization. There are sample libraries in certain machine learning packages that provide sample code for producing a small subset of demonstrable applications.
 
-Since the project was built to support existing implementations of data mining tasks, we targeted the most common libraries used for building text mining algorithms. We leveraged the pandas Python package to build data frames, and used the scikit-learn Python machine learning library as a test bench to support various text mining and analysis tasks.
+Since the project was built to support existing implementations of data mining tasks, we targeted the most common libraries used for building text mining algorithms. We leveraged the pandas Python package to build data frames, and used the *scikit-learn* Python machine learning library as a test bench to support various text mining and analysis tasks.
 
 We implemented the web application front-end using *Angular*, a TypeScript-based open-source platform. For the application back-end, we used *Flask*, a web framework written in Python.
+
+## Back-end
+
+The application back-end was implemented using the Python web framework *Flask*. As a web framework, *Flask* maps URLs to Python code. The Python code for *Spotlight* includes methods for data pre-processing, training models, computing model predictions, and post-processing results for storage and consumption. The data frames used in *Spotlight* were implemented using the Python *pandas* open source library. This library provides easy-to-use data structures that can accommodate heterogeneous data types, and has tools for reading and writing data between in-memory data structures and different storage media such as CSV files and SQL databases. To process these data, the out-of-the-box analytics includes calls to classification methods from the *scikit-learn* Python library. 
+
+## Front-end
+
+The application front-end was implemented using the TypeScript-based open-source *Angular* platform. The collective *Angular* web applications for *Spotlight* include a top-level organization page (*app*), a default application home page (*home*), a model training application (*train*), a model prediction application (*test*) and a quick model checking application (*classifier*). *Angular* web applications include a HTML component for web layout as well as TypeScript components for processing.
 
 # Usage
 
