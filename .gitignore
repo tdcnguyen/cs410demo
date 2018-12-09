@@ -7,3 +7,6 @@ node_modules/
 # Web server store for classifiers
 store/
 *_classifier
+
+# Package lock
+*package-lock.json
