@@ -67,7 +67,7 @@ npm install
 Start the back-end Flask server.
 
 1. Open a command-line interface.
-2. Change directories to the application root.
+2. Change directories to the application root folder.
 3. Run the following command: `pipenv run python app.py`
 
 ### Front-end Startup
