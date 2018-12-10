@@ -45,7 +45,7 @@ The application front-end was implemented using the TypeScript-based open-source
 ### Software Requirements
 
 1. Python 3.X (https://www.python.org/)
-2. pip (Python package manager)
+2. pip3 (Python 3.X package manager)
 3. npm (https://www.npmjs.com/)
 
 ### Back-end Setup
@@ -54,7 +54,7 @@ The application back-end requires the `pipenv` tool.
 Run the following commands:
 
 ```
-pip install pipenv
+pip3 install pipenv
 pipenv install
 ```
 
