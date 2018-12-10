@@ -68,6 +68,12 @@ cd www
 npm install
 ```
 
+With administrator privileges, run the following command:
+
+```
+npm install -g @angular/cli
+```
+
 ## Startup
 
 ### Back-end Startup
