@@ -51,7 +51,7 @@ The application front-end was implemented using the TypeScript-based open-source
 ### Back-end Setup
 
 The application back-end requires the `pipenv` tool.
-Run the following commands:
+Run the following commands from the application root folder:
 
 ```
 pip3 install pipenv
@@ -61,10 +61,9 @@ pipenv install
 ### Front-end Setup
 
 The application front-end requires the installation of Node.js package dependencies.
-Run the following commands:
+Run the following commands from the application *www* folder:
 
 ```
-cd www
 npm install
 ```
 
