@@ -111,3 +111,7 @@ To ensure that the same libraries are available on the server as well as your lo
 3. Add a *\*.yapsy-plugin* file to describe your classifier.
 
 When you start *Textlight*, the classifier will automatically be loaded for testing and training. If you would like to train your model outside your application, but test the model within the application, you may create a pickle (.pkl) file containing the model and upload it directly.
+
+## Tutorial
+
+A video tutorial for Textlight can be found here: https://www.youtube.com/watch?v=sqz894lsjWg
